@@ -1,12 +1,17 @@
+import { constructDateString, deconstructDateString } from "$lib/date.ts";
 import { Post } from "$lib/server/db.js";
 import { Op } from "@sequelize/core";
 import { json } from "@sveltejs/kit";
 
 async function getThumbnails(monthStr: string): Promise<Array<Post>> {
   const start = new Date(monthStr);
-  const end = new Date(start.getFullYear(), start.getMonth() + 2, 1) // next month
-
-  console.log('start: ', start.toISOString(), ' end: ', end.toISOString())
+  const [startYear, startMonth] = deconstructDateString(monthStr)
+  const [endYear, endMonth] = [
+    startMonth === '12' ? Number(startYear) + 1 : startYear,
+    startMonth === '12' ? '1' : Number(startMonth) + 1,
+  ]
+  const nextMonthStr = constructDateString([String(endYear), String(endMonth)])
+  const end = new Date(nextMonthStr)
 
   return await Post.findAll({
     attributes: [
