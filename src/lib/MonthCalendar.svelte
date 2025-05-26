@@ -56,6 +56,5 @@
 
   .day img {
     object-fit: cover;
-    filter: blur(0.2px);
   }
 </style>
