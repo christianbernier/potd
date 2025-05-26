@@ -28,10 +28,6 @@ export const load = (async (event) => {
 		dates.set(post.date, new Uint8Array(post.image_compressed.data))
 	}
 
-	console.log('this page:', monthStr)
-	console.log('dates:', dates.size)
-	console.log('posts:', posts.length)
-
 	return {
 		dates,
 		monthStr,

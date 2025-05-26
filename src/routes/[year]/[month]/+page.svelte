@@ -3,8 +3,6 @@
 	import NavBar from '$lib/NavBar.svelte';
 
   let { data } = $props();
-
-  console.log(data.dates)
 </script>
 
 <NavBar

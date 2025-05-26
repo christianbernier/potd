@@ -6,6 +6,8 @@ async function getThumbnails(monthStr: string): Promise<Array<Post>> {
   const start = new Date(monthStr);
   const end = new Date(start.getFullYear(), start.getMonth() + 2, 1) // next month
 
+  console.log('start: ', start.toISOString(), ' end: ', end.toISOString())
+
   return await Post.findAll({
     attributes: [
       'date',
