@@ -25,12 +25,19 @@
 </div>
 
 <style>
-  div, img {
+  div {
     max-width: 100%;
-    max-height: 100%;
-
+    max-height: 90vh;
     display: flex;
     flex-direction: column;
+  }
+
+  img {
+    max-width: 100%;
+    max-height: 70vh;
+    width: auto;
+    height: auto;
+    object-fit: contain;
   }
 
   p {
