@@ -1,26 +1,15 @@
 <script lang="ts">
 	import { page } from "$app/state";
 	import Calendar from "./Calendar.svelte";
-	import { deconstructDateString, padDatePart } from "./date.js";
+	import { padDatePart } from "./date.js";
 
   let {
     monthStr,
-    dates,
+    posts,
   }: {
     monthStr: string,
-    dates: Map<string, Uint8Array>,
+    posts: Array<string>,
   } = $props();
-
-  // when the dates in the month are loaded, link the provided images to those divs
-  let images = new Map<string, string>();
-  let imgTags = $state(new Array<HTMLImageElement>(31))
-  $effect(() => {
-    dates.entries().forEach((value) => {
-      const url = URL.createObjectURL(new Blob([value[1]], { type: 'image/png' }));
-      images.set(value[0], url)
-      imgTags[Number(deconstructDateString(value[0])[2]) - 1].src = url
-    })
-  })
 </script>
 
 <Calendar {monthStr}>
@@ -29,9 +18,9 @@
       <div class="day">
         <a
           href={`${page.url.pathname}/${padDatePart(day + 1)}`}
-          class={!imgTags[day]?.src?.length ? 'invisible' : ''}
+          class={posts.includes(`${monthStr}-${padDatePart(day + 1)}`) ? '' : 'invisible'}
         >
-          <img bind:this={imgTags[day]} alt={''} />
+          <img src={`/previews/${monthStr}-${padDatePart(day + 1)}.jpg`} alt='' >
         </a>
       </div>
     {/each}

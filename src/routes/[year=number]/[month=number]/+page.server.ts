@@ -1,5 +1,5 @@
 import { error, redirect, type NumericRange } from '@sveltejs/kit';
-import type { PageServerLoad } from './$types.js';
+import type { PageServerLoad } from './$types.ts';
 import { constructDateString, getMonthPathOffset } from '$lib/date.js';
 
 export const load = (async (event) => {
@@ -16,20 +16,14 @@ export const load = (async (event) => {
 	const up = `/${event.params.year}`
 
 	// get images for this month
-	const response = await event.fetch(`/api/compressed/${monthStr}`);
+	const response = await event.fetch(`/api/months/${monthStr}`);
 	const posts = await response.json();
 	if (!response.ok) {
 		error(response.status as NumericRange<400, 599>, posts.message);
 	}
 
-	// construct the dates map for the month
-	const dates = new Map<string, Uint8Array>();
-	for (const post of posts) {
-		dates.set(post.date, new Uint8Array(post.image_compressed.data))
-	}
-
 	return {
-		dates,
+		posts,
 		monthStr,
 		forward,
 		back,

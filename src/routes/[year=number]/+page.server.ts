@@ -1,5 +1,5 @@
 import { error, type NumericRange } from '@sveltejs/kit';
-import type { PageServerLoad } from './$types.js';
+import type { PageServerLoad } from './$types.ts';
 
 export const load = (async (event) => {
 	const year = Number(event.params.year)

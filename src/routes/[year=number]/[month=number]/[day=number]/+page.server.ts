@@ -1,5 +1,5 @@
 import { error, redirect, type NumericRange } from '@sveltejs/kit';
-import type { PageServerLoad } from './$types.js';
+import type { PageServerLoad } from './$types.ts';
 import { constructDateString, getDatePathOffset } from '$lib/date.js';
 
 export const load = (async (event) => {
@@ -29,11 +29,9 @@ export const load = (async (event) => {
 	if (post === null) {
 		error(404, 'No image for this date.')
 	}
-
-  const imageByteArray = new Uint8Array(post.image.data)
-  
+	
 	return {
-		imageByteArray,
+		date,
 		caption: post.caption,
 		current: date.replaceAll('-', '/'),
 		forward: forwardRes.ok ? forward : undefined,

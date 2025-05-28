@@ -11,4 +11,4 @@
   forward={data.forward}
   up={data.up}
 />
-<MonthCalendar monthStr={data.monthStr} dates={data.dates} />
+<MonthCalendar monthStr={data.monthStr} posts={data.posts} />
