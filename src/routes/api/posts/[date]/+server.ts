@@ -1,11 +1,10 @@
-import { getFileBytes } from "$lib/image.js";
 import { Post } from "$lib/server/db.js";
 import { env } from "$lib/server/env.ts";
 import { error, json } from "@sveltejs/kit";
 
-async function getPost(dateStr: string, noimage: boolean): Promise<Post | null> {
+async function getPost(dateStr: string): Promise<Post | null> {
   return await Post.findOne({
-    attributes: noimage ? ['date', 'caption'] : ['date', 'image', 'caption'],
+    attributes: ['date', 'caption'],
     where: {
       date: dateStr
     },
@@ -14,7 +13,7 @@ async function getPost(dateStr: string, noimage: boolean): Promise<Post | null> 
 }
 
 async function doesPostExist(date: string) {
-  const post = await getPost(date, true);
+  const post = await getPost(date);
   return post !== null
 }
 
@@ -46,10 +45,9 @@ async function addToGithubRepository(file: File, path: string) {
   return result;
 }
 
-export async function GET({ params, url }) {
+export async function GET({ params }) {
   const date = params.date;
-  const noimage = Boolean(url.searchParams.get('noimage'))
-  const result = await getPost(date, noimage);
+  const result = await getPost(date);
 
   if (result === null) {
     error(404, { message: 'Post does not exist.' })
@@ -68,19 +66,13 @@ export async function POST({ params, request }) {
   const formData = await request.formData();
   const caption = formData.get('caption') as string;
 
-  // get image data and convert it into a byte array
   const fullQualityImage = formData.get('fullQualityImage') as File;
   const compressedImage = formData.get('compressedImage') as File;
-  const image = await getFileBytes(fullQualityImage);
-  const image_compressed = await getFileBytes(compressedImage);
-
-  await addToGithubRepository(fullQualityImage, `static/fullQuality/${date}.jpg`)
-  await addToGithubRepository(fullQualityImage, `static/preview/${date}.jpg`)
+  await addToGithubRepository(fullQualityImage, `static/fullQuality/${date}.jpeg`)
+  await addToGithubRepository(compressedImage, `static/preview/${date}.jpeg`)
 
   const post = await Post.create({
     date,
-    image,
-    image_compressed,
     caption,
   })
   
@@ -89,7 +81,7 @@ export async function POST({ params, request }) {
 
 export async function DELETE({ params }) {
   const date = params.date;
-  const existingPost = await getPost(date, true);
+  const existingPost = await getPost(date);
 
   if (existingPost === null) {
     error(404, { message: 'Post does not exist.' })
@@ -102,7 +94,7 @@ export async function DELETE({ params }) {
 
 export async function PATCH({ request, params }) {
   const date = params.date;
-  const existingPost = await getPost(date, true);
+  const existingPost = await getPost(date);
 
   if (existingPost === null) {
     error(404, { message: 'Post does not exist.' })

@@ -17,14 +17,6 @@ export class Post extends Model<InferAttributes<Post>, InferCreationAttributes<P
   @NotNull
   declare date: string;
 
-  @Attribute(DataTypes.BLOB)
-  @NotNull
-  declare image: Uint8Array;
-
-  @Attribute(DataTypes.BLOB)
-  @NotNull
-  declare image_compressed: Uint8Array;
-
   @Attribute(DataTypes.STRING(500))
   @NotNull
   declare caption: string;

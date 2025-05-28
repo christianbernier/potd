@@ -3,7 +3,7 @@ import type { PageServerLoad } from '../$types.js';
 
 export const load = (async (event) => {
   const date = event.params.date;
-  const response = await event.fetch(`/api/posts/${date}?noimage=true`);
+  const response = await event.fetch(`/api/posts/${date}`);
 	const post: {
     date: string,
     caption: string,

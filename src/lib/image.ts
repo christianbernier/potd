@@ -25,13 +25,3 @@ export async function getCompressedImage(image: File | null, maxSizeMB: number):
 export async function getTinyImage(image: File | null): Promise<File> {
   return getCompressedImage(image, 0.03)
 }
-
-/**
- * Gets the byte contents of a file.
- * @param file the file to get the bytes of
- * @returns the bytes of the provided file
- */
-export async function getFileBytes(file: File): Promise<Uint8Array> {
-  const buffer = await file.arrayBuffer();
-  return new Uint8Array(buffer);
-}

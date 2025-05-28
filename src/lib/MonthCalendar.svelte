@@ -20,7 +20,9 @@
           href={`${page.url.pathname}/${padDatePart(day + 1)}`}
           class={posts.includes(`${monthStr}-${padDatePart(day + 1)}`) ? '' : 'invisible'}
         >
-          <img src={`/previews/${monthStr}-${padDatePart(day + 1)}.jpg`} alt='' >
+          {#if posts.includes(`${monthStr}-${padDatePart(day + 1)}`)}
+            <img src={`/previews/${monthStr}-${padDatePart(day + 1)}.jpeg`} alt='' >
+          {/if}
         </a>
       </div>
     {/each}

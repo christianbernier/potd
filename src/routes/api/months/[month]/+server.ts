@@ -4,7 +4,6 @@ import { Op } from "@sequelize/core";
 import { json } from "@sveltejs/kit";
 
 async function getDates(monthStr: string): Promise<Array<Post>> {
-  console.log(monthStr)
   const start = new Date(`${monthStr}-01`);
   const [startYear, startMonth] = deconstructDateString(monthStr)
   const [endYear, endMonth] = [
@@ -13,8 +12,6 @@ async function getDates(monthStr: string): Promise<Array<Post>> {
   ]
   const nextMonthStr = constructDateString([String(endYear), String(endMonth)])
   const end = new Date(nextMonthStr)
-
-  console.log(start, end)
 
   return await Post.findAll({
     attributes: [ 'date' ],

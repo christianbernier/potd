@@ -13,6 +13,7 @@
 		<li>Jobs</li>
 		<ul>
 			<li><a href="/admin/jobs/sync/0">Sync</a></li>
+			<li><a href="/admin/jobs/download">Download</a></li>
 		</ul>
 	</ul>
 </div>

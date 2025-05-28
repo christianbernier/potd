@@ -13,9 +13,9 @@ export const load = (async (event) => {
 
 	// check the neighboring dates to see if they have posts
 	const forward = getDatePathOffset(date, 1)
-	const forwardRes = await event.fetch(`/api/posts/${forward.replaceAll('/', '-')}?noimage=true`)
+	const forwardRes = await event.fetch(`/api/posts/${forward.replaceAll('/', '-')}`)
 	const back = getDatePathOffset(date, -1)
-	const backRes = await event.fetch(`/api/posts/${back.replaceAll('/', '-')}?noimage=true`)
+	const backRes = await event.fetch(`/api/posts/${back.replaceAll('/', '-')}`)
 	const up = `/${event.params.year}/${event.params.month}`
 
 	// get this date's post

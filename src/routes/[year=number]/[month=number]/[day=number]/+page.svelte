@@ -11,7 +11,7 @@
     forward={data.forward}
     up={data.up}
   />
-  <img src={`/fullQuality/${data.date}.jpg`} alt={data.caption} >
+  <img src={`/fullQuality/${data.date}.jpeg`} alt={data.caption} >
   <p>{data.caption}</p>
 </div>
 
