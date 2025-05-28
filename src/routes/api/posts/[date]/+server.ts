@@ -1,5 +1,6 @@
 import { getFileBytes } from "$lib/image.js";
 import { Post } from "$lib/server/db.js";
+import { env } from "$lib/server/env.ts";
 import { error, json } from "@sveltejs/kit";
 
 async function getPost(dateStr: string, noimage: boolean): Promise<Post | null> {
@@ -15,6 +16,34 @@ async function getPost(dateStr: string, noimage: boolean): Promise<Post | null> 
 async function doesPostExist(date: string) {
   const post = await getPost(date, true);
   return post !== null
+}
+
+async function toBase64(file: File) {
+  const buffer = Buffer.from(await file.arrayBuffer());
+  return buffer.toString('base64')
+}
+
+async function addToGithubRepository(file: File, path: string) {
+  const base64 = await toBase64(file);
+  const response = await fetch(`https://api.github.com/repos/christianbernier/potd/contents/${path}`, {
+    method: 'PUT',
+    headers: {
+      "Authorization": `Bearer ${env.GIT_TOKEN}`, // store securely
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      message: `Add image ${path}`,
+      content: base64,
+      branch: "main"
+    })
+  })
+
+  const result = await response.json();
+  if (!response.ok) {
+    throw new Error(`GitHub error: ${result.message}`);
+  }
+
+  return result;
 }
 
 export async function GET({ params, url }) {
@@ -44,6 +73,9 @@ export async function POST({ params, request }) {
   const compressedImage = formData.get('compressedImage') as File;
   const image = await getFileBytes(fullQualityImage);
   const image_compressed = await getFileBytes(compressedImage);
+
+  await addToGithubRepository(fullQualityImage, `static/fullQuality/${date}.jpg`)
+  await addToGithubRepository(fullQualityImage, `static/preview/${date}.jpg`)
 
   const post = await Post.create({
     date,
