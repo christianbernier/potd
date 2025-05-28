@@ -18,9 +18,9 @@
   {current}
 
   <div class="links">
-    <NavBarLink text="&lt;" url={back} key="ArrowLeft"/>
-    <NavBarLink text="^" url={up} key="ArrowUp"/>
-    <NavBarLink text="&gt;" url={forward} key="ArrowRight"/>
+    <NavBarLink text="prev" url={back} key="ArrowLeft"/>
+    <NavBarLink text="up" url={up} key="ArrowUp"/>
+    <NavBarLink text="next" url={forward} key="ArrowRight"/>
   </div>
 </div>
 
