@@ -1,0 +1,31 @@
+name: Add Image
+
+on:
+  workflow_dispatch:
+    inputs:
+      filename:
+        description: 'Filename to save as (e.g., full/2025-05-28.jpg or preview/2025-05-28.jpg)'
+        required: true
+      base64:
+        description: 'Base64-encoded file contents'
+        required: true
+
+jobs:
+  add-image:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Decode and save file
+        run: |
+          echo "${{ github.event.inputs.base64 }}" | base64 -d > static/images/${{ github.event.inputs.filename }}
+
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add static/images/${{ github.event.inputs.filename }}
+          git commit -m "Add image ${{ github.event.inputs.filename }}"
+          git push
