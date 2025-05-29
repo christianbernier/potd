@@ -69,7 +69,7 @@ export async function POST({ params, request }) {
   const fullQualityImage = formData.get('fullQualityImage') as File;
   const compressedImage = formData.get('compressedImage') as File;
   await addToGithubRepository(fullQualityImage, `static/fullQuality/${date}.jpeg`)
-  await addToGithubRepository(compressedImage, `static/preview/${date}.jpeg`)
+  await addToGithubRepository(compressedImage, `static/previews/${date}.jpeg`)
 
   const post = await Post.create({
     date,
