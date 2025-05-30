@@ -1,5 +1,5 @@
-import { type Cookies } from "@sveltejs/kit";
-import { env } from "./env.js";
+import { type Cookies } from '@sveltejs/kit';
+import { env } from './env.js';
 
 /**
  * Check whether the user is authenticated by verifying
@@ -8,11 +8,11 @@ import { env } from "./env.js";
  * @returns whether the user is authenticated
  */
 export function isAuthenticated(cookies: Cookies) {
-  const token = cookies.get('token')
+	const token = cookies.get('token');
 
-  if (token === null || token !== env.AUTH_TOKEN) {
-    return false;
-  }
+	if (token === null || token !== env.AUTH_TOKEN) {
+		return false;
+	}
 
-  return true;
+	return true;
 }

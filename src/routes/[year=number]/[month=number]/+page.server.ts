@@ -5,15 +5,15 @@ import { constructDateString, getMonthPathOffset } from '$lib/index.ts';
 export const load = (async (event) => {
 	// ensure leading zero
 	if (event.params.month.length === 1) {
-		redirect(301, `/${event.params.year}/0${event.params.month}`)
+		redirect(301, `/${event.params.year}/0${event.params.month}`);
 	}
 
-	const monthStr = constructDateString([event.params.year, event.params.month])
+	const monthStr = constructDateString([event.params.year, event.params.month]);
 
 	// get neighbor paths
-	const forward = getMonthPathOffset(monthStr, 1)
-	const back = getMonthPathOffset(monthStr, -1)
-	const up = `/${event.params.year}`
+	const forward = getMonthPathOffset(monthStr, 1);
+	const back = getMonthPathOffset(monthStr, -1);
+	const up = `/${event.params.year}`;
 
 	// get images for this month
 	const response = await event.fetch(`/api/months/${monthStr}`);
@@ -28,5 +28,5 @@ export const load = (async (event) => {
 		forward,
 		back,
 		up
-	}
+	};
 }) satisfies PageServerLoad;

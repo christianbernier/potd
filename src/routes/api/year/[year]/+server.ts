@@ -1,5 +1,5 @@
-import { getPostDatesWithinTimeframe } from "$lib/server/index.ts";
-import { json } from "@sveltejs/kit";
+import { getPostDatesWithinTimeframe } from '$lib/server/index.ts';
+import { json } from '@sveltejs/kit';
 
 /**
  * GET the dates of all posts posted within a given year.
@@ -8,8 +8,8 @@ import { json } from "@sveltejs/kit";
  * from the provided year
  */
 export async function GET({ params }) {
-  const start = new Date(`${params.year}-01-01`);
-  const end = new Date(`${params.year + 1}-01-01`);
-  const dates = await getPostDatesWithinTimeframe(start, end);
-  return json(dates)
+	const start = new Date(`${params.year}-01-01`);
+	const end = new Date(`${params.year + 1}-01-01`);
+	const dates = await getPostDatesWithinTimeframe(start, end);
+	return json(dates);
 }

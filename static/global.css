@@ -1,25 +1,25 @@
 :root {
-  --background: #fff;
-  --gray: #eee;
-  --text: #000;  
+	--background: #fff;
+	--gray: #eee;
+	--text: #000;
 
-  --margin-sm: 3px;
-  --margin-md: 5px;
-  --margin-lg: 10px;
-  --margin-xl: 15px;
+	--margin-sm: 3px;
+	--margin-md: 5px;
+	--margin-lg: 10px;
+	--margin-xl: 15px;
 
-  font-family: monospace;
+	font-family: monospace;
 }
 
 body {
-  padding: 0;
-  margin: 0;
+	padding: 0;
+	margin: 0;
 }
 
 a {
-  color: var(--text);
+	color: var(--text);
 }
 
 .invisible {
-  visibility: hidden;
+	visibility: hidden;
 }

@@ -19,13 +19,13 @@
 </div>
 
 <style>
-  div.header {
-    width: 100%;
-    display: flex;
-    flex-direction: row;
+	div.header {
+		width: 100%;
+		display: flex;
+		flex-direction: row;
 		align-items: center;
 		justify-content: space-between;
-  }
+	}
 
 	div.actions {
 		width: 100%;

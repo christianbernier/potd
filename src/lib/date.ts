@@ -4,7 +4,7 @@
  * @returns the formatted date string
  */
 export function constructDateString(parts: Array<string>): string {
-  return parts.join('-')
+	return parts.join('-');
 }
 
 /**
@@ -13,7 +13,7 @@ export function constructDateString(parts: Array<string>): string {
  * @returns an array of the year, month, and date as strings
  */
 export function deconstructDateString(dateString: string): Array<string> {
-  return dateString.split('-')
+	return dateString.split('-');
 }
 
 /**
@@ -22,7 +22,7 @@ export function deconstructDateString(dateString: string): Array<string> {
  * @returns the padded version of the provided date part
  */
 export function padDatePart(datePart: string | number): string {
-  return String(datePart).padStart(2, '0')
+	return String(datePart).padStart(2, '0');
 }
 
 /**
@@ -32,9 +32,9 @@ export function padDatePart(datePart: string | number): string {
  * @returns the path version (YYYY/MM/DD) of the date plus or minus the offset
  */
 export function getDatePathOffset(currentDateString: string, offset: number): string {
-  const current = new Date(currentDateString)
-  current.setUTCDate(current.getUTCDate() + offset)
-  return `/${current.toLocaleDateString('en-ZA', { timeZone: 'UTC' })}`
+	const current = new Date(currentDateString);
+	current.setUTCDate(current.getUTCDate() + offset);
+	return `/${current.toLocaleDateString('en-ZA', { timeZone: 'UTC' })}`;
 }
 
 /**
@@ -44,10 +44,10 @@ export function getDatePathOffset(currentDateString: string, offset: number): st
  * @returns the path version (YYYY/MM) of the month plus or minus the offset
  */
 export function getMonthPathOffset(currentMonthString: string, offset: number): string {
-  const parts = deconstructDateString(currentMonthString).map(Number)
-  const current = new Date(parts[0], parts[1] - 1); // month is zero-based
-  current.setMonth(current.getMonth() + offset);
-  const nextYear = current.getFullYear();
-  const nextMonth = padDatePart(current.getMonth() + 1);
-  return `/${nextYear}/${nextMonth}`;
+	const parts = deconstructDateString(currentMonthString).map(Number);
+	const current = new Date(parts[0], parts[1] - 1); // month is zero-based
+	current.setMonth(current.getMonth() + offset);
+	const nextYear = current.getFullYear();
+	const nextMonth = padDatePart(current.getMonth() + 1);
+	return `/${nextYear}/${nextMonth}`;
 }

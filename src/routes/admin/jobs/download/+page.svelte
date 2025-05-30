@@ -2,22 +2,22 @@
 	let { data } = $props();
 
 	async function download(date: string) {
-    const result = await fetch(`/api/posts/${date}`)
-		const data = await result.json()
-		
-  	const imageByteArray = new Uint8Array(data.image_compressed.data)
+		const result = await fetch(`/api/posts/${date}`);
+		const data = await result.json();
 
-		const aTag = document.createElement('a')
+		const imageByteArray = new Uint8Array(data.image_compressed.data);
+
+		const aTag = document.createElement('a');
 		aTag.href = URL.createObjectURL(new Blob([imageByteArray], { type: 'image/jpg' }));
-		aTag.download = `${date}.jpg`
-		aTag.click()
-  }
+		aTag.download = `${date}.jpg`;
+		aTag.click();
+	}
 
 	async function downloadAll() {
-    data.posts.forEach(async post => {
-      await download(post.date)
-    })
-  }
+		data.posts.forEach(async (post) => {
+			await download(post.date);
+		});
+	}
 </script>
 
 <h4>Download</h4>

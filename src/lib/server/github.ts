@@ -1,4 +1,4 @@
-import { env } from "./env.ts";
+import { env } from './env.ts';
 
 /**
  * Convert a file into its base-64 representation.
@@ -6,8 +6,8 @@ import { env } from "./env.ts";
  * @returns a promise of a string with the base-64 version of the file contents
  */
 async function toBase64(file: File) {
-  const buffer = Buffer.from(await file.arrayBuffer());
-  return buffer.toString('base64')
+	const buffer = Buffer.from(await file.arrayBuffer());
+	return buffer.toString('base64');
 }
 
 /**
@@ -17,23 +17,27 @@ async function toBase64(file: File) {
  * @param data optional JSON data to send in the body of the request
  * @returns a promise of the results of the request
  */
-async function githubApiRequest(path: string, method: 'GET' | 'PUT' | 'POST' | 'DELETE', data?: object) {
-  const response = await fetch(`https://api.github.com/repos/christianbernier/potd/${path}`, {
-    method,
-    headers: {
-      'Authorization': `Bearer ${env.GIT_TOKEN}`,
-      'Content-Type': 'application/json'
-    },
-    body: data === undefined ? null : JSON.stringify(data)
-  })
-  const result = await response.json();
-  
-  // if there was a problem, throw an error
-  if (!response.ok) {
-    throw new Error(result.message)
-  }
+async function githubApiRequest(
+	path: string,
+	method: 'GET' | 'PUT' | 'POST' | 'DELETE',
+	data?: object
+) {
+	const response = await fetch(`https://api.github.com/repos/christianbernier/potd/${path}`, {
+		method,
+		headers: {
+			Authorization: `Bearer ${env.GIT_TOKEN}`,
+			'Content-Type': 'application/json'
+		},
+		body: data === undefined ? null : JSON.stringify(data)
+	});
+	const result = await response.json();
 
-  return result;
+	// if there was a problem, throw an error
+	if (!response.ok) {
+		throw new Error(result.message);
+	}
+
+	return result;
 }
 
 /**
@@ -41,12 +45,12 @@ async function githubApiRequest(path: string, method: 'GET' | 'PUT' | 'POST' | '
  * @param branch the name of the new branch
  */
 export async function createBranch(branch: string) {
-  const commitsData = await githubApiRequest('commits', 'GET');
-  const lastCommitSha = commitsData[0].sha;
-  await githubApiRequest('git/refs', 'POST', {
-    'ref': `refs/heads/${branch}`,
-    'sha': lastCommitSha
-  });
+	const commitsData = await githubApiRequest('commits', 'GET');
+	const lastCommitSha = commitsData[0].sha;
+	await githubApiRequest('git/refs', 'POST', {
+		ref: `refs/heads/${branch}`,
+		sha: lastCommitSha
+	});
 }
 
 /**
@@ -56,12 +60,12 @@ export async function createBranch(branch: string) {
  * @param branch the branch to add the commit of the file
  */
 export async function addFileToRepository(file: File, path: string, branch: string) {
-  const base64 = await toBase64(file);
-  await githubApiRequest(`contents/${path}`, 'PUT', {
-    message: `Add file ${path}`,
-    content: base64,
-    branch,
-  });
+	const base64 = await toBase64(file);
+	await githubApiRequest(`contents/${path}`, 'PUT', {
+		message: `Add file ${path}`,
+		content: base64,
+		branch
+	});
 }
 
 /**
@@ -69,8 +73,8 @@ export async function addFileToRepository(file: File, path: string, branch: stri
  * @param branch the name of the branch to merge into the main branch
  */
 export async function mergeBranch(branch: string) {
-  await githubApiRequest('merges', 'POST', {
-    'base': 'main',
-    'head': branch,
-  });
+	await githubApiRequest('merges', 'POST', {
+		base: 'main',
+		head: branch
+	});
 }

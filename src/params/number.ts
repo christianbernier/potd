@@ -5,5 +5,5 @@ import type { ParamMatcher } from '@sveltejs/kit';
  * of a number, such as '2025' or '04'.
  */
 export const match = ((param: string): boolean => {
-  return !Number.isNaN(Number(param))
+	return !Number.isNaN(Number(param));
 }) satisfies ParamMatcher;

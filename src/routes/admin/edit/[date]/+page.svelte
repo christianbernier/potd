@@ -14,13 +14,13 @@
 		formData.append('date', data.date);
 		const response = await fetch((event.target as EventTarget & HTMLFormElement).action, {
 			method: 'POST',
-			body: formData,
+			body: formData
 		});
 
 		const result = deserialize(await response.text());
 
 		if (result.type === 'success') {
-			const pathDate = (formData.get('date') as string).replaceAll('-', '/')
+			const pathDate = (formData.get('date') as string).replaceAll('-', '/');
 			location.href = `/${pathDate}`;
 		}
 
@@ -33,6 +33,6 @@
 <p>Date: {data.date}</p>
 <form method="POST" enctype="multipart/form-data" onsubmit={edit}>
 	<label for="caption">Caption:</label>
-	<input name="caption" type="text" defaultValue={data.caption} required>
+	<input name="caption" type="text" defaultValue={data.caption} required />
 	<button>Edit</button>
 </form>

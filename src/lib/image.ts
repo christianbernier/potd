@@ -1,4 +1,4 @@
-import imageCompression, { type Options } from "browser-image-compression";
+import imageCompression, { type Options } from 'browser-image-compression';
 
 const compress = imageCompression as unknown as (file: File, options: Options) => Promise<File>;
 
@@ -9,12 +9,12 @@ const compress = imageCompression as unknown as (file: File, options: Options) =
  * @returns a promise of the compressed file
  */
 export async function getCompressedImage(image: File | null, maxSizeMB: number): Promise<File> {
-  if (!image) {
-    throw new Error('No image provided!');
-  }
+	if (!image) {
+		throw new Error('No image provided!');
+	}
 
-  const options = { maxSizeMB, useWebWorker: true, maxIteration: 40 };
-  return await compress(image, options);
+	const options = { maxSizeMB, useWebWorker: true, maxIteration: 40 };
+	return await compress(image, options);
 }
 
 /**
@@ -23,5 +23,5 @@ export async function getCompressedImage(image: File | null, maxSizeMB: number):
  * @returns a promise of the compressed file
  */
 export async function getTinyImage(image: File | null): Promise<File> {
-  return getCompressedImage(image, 0.03)
+	return getCompressedImage(image, 0.03);
 }

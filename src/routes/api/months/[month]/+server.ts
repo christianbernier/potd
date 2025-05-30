@@ -1,6 +1,6 @@
-import { constructDateString, deconstructDateString } from "$lib/index.ts";
-import { getPostDatesWithinTimeframe } from "$lib/server/index.ts";
-import { json } from "@sveltejs/kit";
+import { constructDateString, deconstructDateString } from '$lib/index.ts';
+import { getPostDatesWithinTimeframe } from '$lib/server/index.ts';
+import { json } from '@sveltejs/kit';
 
 /**
  * GET the dates of all posts posted within a given month.
@@ -9,10 +9,10 @@ import { json } from "@sveltejs/kit";
  * from the provided month
  */
 export async function GET({ params }) {
-  const startDateString = constructDateString([...deconstructDateString(params.month), '01']);
-  const start = new Date(startDateString);
-  const end = new Date(startDateString);
-  end.setUTCMonth(end.getUTCMonth() + 1);
-  const dates = await getPostDatesWithinTimeframe(start, end);
-  return json(dates)
+	const startDateString = constructDateString([...deconstructDateString(params.month), '01']);
+	const start = new Date(startDateString);
+	const end = new Date(startDateString);
+	end.setUTCMonth(end.getUTCMonth() + 1);
+	const dates = await getPostDatesWithinTimeframe(start, end);
+	return json(dates);
 }

@@ -30,5 +30,19 @@ export default ts.config(
 				parser: ts.parser
 			}
 		}
+	},
+	{
+		rules: {
+			'@typescript-eslint/no-unused-vars': [
+				'error',
+				{
+					argsIgnorePattern: '^_',
+					varsIgnorePattern: '^_',
+					caughtErrorsIgnorePattern: '^_'
+				}
+			],
+			// Also disable the base rule to avoid conflicts
+			'no-unused-vars': 'off'
+		}
 	}
 );

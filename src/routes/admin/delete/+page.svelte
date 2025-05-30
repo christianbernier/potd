@@ -8,16 +8,16 @@
 			return;
 		}
 
-    const result = await fetch(`/api/posts/${date}`, {
+		const result = await fetch(`/api/posts/${date}`, {
 			method: 'DELETE'
-		})
+		});
 
 		if (result.ok) {
-			await invalidateAll()
+			await invalidateAll();
 		} else {
-			alert(`Error deleting ${date}: ${await result.json()}`)
+			alert(`Error deleting ${date}: ${await result.json()}`);
 		}
-  }
+	}
 </script>
 
 <h4>Delete post</h4>

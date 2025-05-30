@@ -1,3 +1,3 @@
-export * from './date.ts'
-export * from './form.ts'
-export * from './image.ts'
+export * from './date.ts';
+export * from './form.ts';
+export * from './image.ts';
