@@ -1,24 +1,15 @@
-import { Post } from "$lib/server/db.js";
-import { Op } from "@sequelize/core";
+import { getPostDatesWithinTimeframe } from "$lib/server/index.ts";
 import { json } from "@sveltejs/kit";
 
-async function getDates(year: string): Promise<Array<Post>> {
-  const start = new Date(`${year}-01-01`);
-  const end = new Date(`${year + 1}-01-01`);
-
-  return await Post.findAll({
-    attributes: [ 'date' ],
-    where: {
-      date: {
-        [Op.gte]: start,
-        [Op.lt]: end,
-      }
-    },
-    raw: true,
-  });
-}
-
+/**
+ * GET the dates of all posts posted within a given year.
+ * @param year the year of posts to obtain
+ * @returns an array of strings in YYYY-MM-DD format representing each post
+ * from the provided year
+ */
 export async function GET({ params }) {
-  const results = await getDates(params.year);
-  return json(results)
+  const start = new Date(`${params.year}-01-01`);
+  const end = new Date(`${params.year + 1}-01-01`);
+  const dates = await getPostDatesWithinTimeframe(start, end);
+  return json(dates)
 }

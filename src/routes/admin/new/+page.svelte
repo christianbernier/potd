@@ -1,8 +1,7 @@
 <script lang="ts">
 	import { applyAction, deserialize } from "$app/forms";
-	import { FormState } from "$lib/form.js";
-	import { getCompressedImage, getTinyImage } from "$lib/image.js";
-	import ImageSelector from "$lib/ImageSelector.svelte";
+	import { getCompressedImage, getTinyImage, FormState } from "$lib/index.js";
+	import ImageSelector from "$lib/components/ImageSelector.svelte";
 
 	let formState: FormState = $state(FormState.EDITING);
 	

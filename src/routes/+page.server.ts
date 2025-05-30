@@ -1,6 +1,6 @@
 import { redirect } from "@sveltejs/kit";
 import type { PageServerLoad } from "./$types.js";
-import { padDatePart } from "$lib/date.js";
+import { padDatePart } from "$lib/index.js";
 
 // automatically go to the current month upon load
 export const load = (async () => {

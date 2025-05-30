@@ -1,6 +1,6 @@
 import { error, redirect, type NumericRange } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types.ts';
-import { constructDateString, getMonthPathOffset } from '$lib/date.js';
+import { constructDateString, getMonthPathOffset } from '$lib/index.ts';
 
 export const load = (async (event) => {
 	// ensure leading zero

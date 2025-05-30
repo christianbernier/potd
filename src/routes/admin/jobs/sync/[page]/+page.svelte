@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/state';
-	import { getCompressedImage, getTinyImage } from '$lib/image.js';
+	import { getTinyImage } from '$lib/index.js';
 
   let { data } = $props();
 

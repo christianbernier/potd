@@ -1,6 +1,6 @@
 import { error, redirect, type NumericRange } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types.ts';
-import { constructDateString, getDatePathOffset } from '$lib/date.js';
+import { constructDateString, getDatePathOffset } from '$lib/index.ts';
 
 export const load = (async (event) => {
   const date = constructDateString([event.params.year, event.params.month, event.params.day])

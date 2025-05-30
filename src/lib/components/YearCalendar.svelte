@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { padDatePart } from "./date.js";
+	import { padDatePart } from "$lib/index.ts";
 	import YearCalendarMonth from "./YearCalendarMonth.svelte";
 
   const { year, dates }: { year: string, dates: Array<Set<string>> } = $props();

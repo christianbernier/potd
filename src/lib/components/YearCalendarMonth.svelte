@@ -1,6 +1,6 @@
 <script lang="ts">
+	import { padDatePart } from "$lib/index.ts";
 	import Calendar from "./Calendar.svelte";
-	import { padDatePart } from "./date.js";
 
   let { monthStr, datesWithPosts }: { monthStr: string, datesWithPosts: Set<string> } = $props();
 </script>

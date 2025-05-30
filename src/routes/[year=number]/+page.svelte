@@ -1,6 +1,7 @@
 <script lang="ts">
-	import NavBar from '$lib/NavBar.svelte';
-	import YearCalendar from '$lib/YearCalendar.svelte';
+	import NavBar from '$lib/components/NavBar.svelte';
+	import YearCalendar from '$lib/components/YearCalendar.svelte';
+
 
   let { data } = $props();
 </script>

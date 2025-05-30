@@ -1,31 +1,18 @@
-import { constructDateString, deconstructDateString } from "$lib/date.ts";
-import { Post } from "$lib/server/db.js";
-import { Op } from "@sequelize/core";
+import { constructDateString, deconstructDateString } from "$lib/index.ts";
+import { getPostDatesWithinTimeframe } from "$lib/server/index.ts";
 import { json } from "@sveltejs/kit";
 
-async function getDates(monthStr: string): Promise<Array<Post>> {
-  const start = new Date(`${monthStr}-01`);
-  const [startYear, startMonth] = deconstructDateString(monthStr)
-  const [endYear, endMonth] = [
-    startMonth === '12' ? Number(startYear) + 1 : startYear,
-    startMonth === '12' ? '1' : Number(startMonth) + 1,
-  ]
-  const nextMonthStr = constructDateString([String(endYear), String(endMonth)])
-  const end = new Date(nextMonthStr)
-
-  return await Post.findAll({
-    attributes: [ 'date' ],
-    where: {
-      date: {
-        [Op.gte]: start,
-        [Op.lt]: end,
-      }
-    },
-    raw: true,
-  });
-}
-
+/**
+ * GET the dates of all posts posted within a given month.
+ * @param month the month string (YYYY-MM) of the month to obtain
+ * @returns an array of strings in YYYY-MM-DD format representing each post
+ * from the provided month
+ */
 export async function GET({ params }) {
-  const results = (await getDates(params.month)).map(post => post.date);
-  return json(results)
+  const startDateString = constructDateString([...deconstructDateString(params.month), '01']);
+  const start = new Date(startDateString);
+  const end = new Date(startDateString);
+  end.setUTCMonth(end.getUTCMonth() + 1);
+  const dates = await getPostDatesWithinTimeframe(start, end);
+  return json(dates)
 }

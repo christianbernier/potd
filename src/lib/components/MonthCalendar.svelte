@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from "$app/state";
+	import { padDatePart } from "$lib/index.ts";
 	import Calendar from "./Calendar.svelte";
-	import { padDatePart } from "./date.js";
 
   let {
     monthStr,

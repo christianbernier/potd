@@ -1,6 +1,6 @@
 <script lang="ts">
+	import { constructDateString, deconstructDateString } from "$lib/index.ts";
 	import type { Snippet } from "svelte";
-	import { constructDateString, deconstructDateString } from "./date.ts";
 
   let { monthStr, dates }: { monthStr: string, dates: Snippet<[number]> } = $props();
 

@@ -1,6 +1,6 @@
 <script lang="ts">
-	import MonthCalendar from '$lib/MonthCalendar.svelte';
-	import NavBar from '$lib/NavBar.svelte';
+	import MonthCalendar from '$lib/components/MonthCalendar.svelte';
+	import NavBar from '$lib/components/NavBar.svelte';
 
   let { data } = $props();
 </script>
