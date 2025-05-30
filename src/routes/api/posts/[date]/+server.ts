@@ -22,18 +22,43 @@ async function toBase64(file: File) {
   return buffer.toString('base64')
 }
 
-async function addToGithubRepository(file: File, path: string) {
+async function createGithubBranch(branch: string) {
+  const commitsResponse = await fetch(`https://api.github.com/repos/christianbernier/potd/commits`, {
+    method: 'GET',
+    headers: {
+      "Authorization": `Bearer ${env.GIT_TOKEN}`,
+      "Content-Type": "application/json"
+    }
+  })
+  const commitsData = await commitsResponse.json()
+  const lastCommitSha = commitsData[0].sha;
+  
+  const branchResponse = await fetch(`https://api.github.com/repos/christianbernier/potd/git/refs`, {
+    method: 'POST',
+    headers: {
+      "Authorization": `Bearer ${env.GIT_TOKEN}`,
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      "ref": `refs/heads/${branch}`,
+      "sha": lastCommitSha
+    })
+  })
+  await branchResponse.json()
+}
+
+async function addToGithubRepository(file: File, path: string, branch: string) {
   const base64 = await toBase64(file);
   const response = await fetch(`https://api.github.com/repos/christianbernier/potd/contents/${path}`, {
     method: 'PUT',
     headers: {
-      "Authorization": `Bearer ${env.GIT_TOKEN}`, // store securely
+      "Authorization": `Bearer ${env.GIT_TOKEN}`,
       "Content-Type": "application/json"
     },
     body: JSON.stringify({
       message: `Add image ${path}`,
       content: base64,
-      branch: "main"
+      branch,
     })
   })
 
@@ -43,6 +68,21 @@ async function addToGithubRepository(file: File, path: string) {
   }
 
   return result;
+}
+
+async function mergeGithubBranch(branch: string) {
+  const response = await fetch(`https://api.github.com/repos/christianbernier/potd/merges`, {
+    method: 'POST',
+    headers: {
+      "Authorization": `Bearer ${env.GIT_TOKEN}`,
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      "base": "main",
+      "head": branch,
+    })
+  })
+  await response.json()
 }
 
 export async function GET({ params }) {
@@ -66,10 +106,13 @@ export async function POST({ params, request }) {
   const formData = await request.formData();
   const caption = formData.get('caption') as string;
 
+  await createGithubBranch(date);
+
   const fullQualityImage = formData.get('fullQualityImage') as File;
   const compressedImage = formData.get('compressedImage') as File;
-  await addToGithubRepository(fullQualityImage, `static/fullQuality/${date}.jpeg`)
-  await addToGithubRepository(compressedImage, `static/previews/${date}.jpeg`)
+  await addToGithubRepository(fullQualityImage, `static/fullQuality/${date}.jpeg`, date)
+  await addToGithubRepository(compressedImage, `static/previews/${date}.jpeg`, date)
+  await mergeGithubBranch(date)
 
   const post = await Post.create({
     date,
