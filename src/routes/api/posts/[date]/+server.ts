@@ -1,4 +1,4 @@
-import { addFileToRepository, createBranch, mergeBranch, Post } from '$lib/server/index.ts';
+import { addFileToRepository, createBranch, deleteBranch, mergeBranch, Post } from '$lib/server/index.ts';
 import { error, json } from '@sveltejs/kit';
 
 /**
@@ -66,6 +66,7 @@ export async function POST({ params, request }) {
 	await addFileToRepository(fullQualityImage, `static/fullQuality/${date}.jpeg`, date);
 	await addFileToRepository(compressedImage, `static/previews/${date}.jpeg`, date);
 	await mergeBranch(date);
+	await deleteBranch(date);
 
 	// create the database entry
 	const post = await Post.create({ date, caption });

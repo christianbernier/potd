@@ -78,3 +78,11 @@ export async function mergeBranch(branch: string) {
 		head: branch
 	});
 }
+
+/**
+ * Delete a branch in the repository.
+ * @param branch the name of the branch to delete
+ */
+export async function deleteBranch(branch: string) {
+	await githubApiRequest(`git/refs/${branch}`, 'DELETE');
+}
