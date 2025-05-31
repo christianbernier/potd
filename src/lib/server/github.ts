@@ -33,7 +33,7 @@ async function githubApiRequest(
 
 	// no content status for some requests
 	if (response.status === 204) {
-		return;
+		return {};
 	}
 
 	const result = await response.json();
@@ -71,6 +71,20 @@ export async function addFileToRepository(file: File, path: string, branch: stri
 		message: `Add file ${path}`,
 		content: base64,
 		branch
+	});
+}
+
+/**
+ * Delete a file from the repository, in a specific branch, as a commit.
+ * @param path the path of the file within the repository
+ * @param branch the branch to add the commit of the file
+ */
+export async function deleteFileFromRepository(path: string, branch: string) {
+	const fileData = await githubApiRequest(`contents/${path}`, 'GET');
+	await githubApiRequest(`contents/${path}`, 'DELETE', {
+		message: `Delete file ${path}`,
+		branch,
+		sha: fileData.sha,
 	});
 }
 

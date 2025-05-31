@@ -1,4 +1,4 @@
-import { addFileToRepository, createBranch, deleteBranch, mergeBranch, Post } from '$lib/server/index.ts';
+import { addFileToRepository, createBranch, deleteBranch, deleteFileFromRepository, mergeBranch, Post } from '$lib/server/index.ts';
 import { error, json } from '@sveltejs/kit';
 
 /**
@@ -89,6 +89,14 @@ export async function DELETE({ params }) {
 	}
 
 	await Post.destroy({ where: { date } });
+
+	// delete the image from Github
+	const branchName = `delete-${date}`
+	await createBranch(branchName);
+	await deleteFileFromRepository(`static/fullQuality/${date}.jpeg`, branchName);
+	await deleteFileFromRepository(`static/previews/${date}.jpeg`, branchName);
+	await mergeBranch(branchName);
+	await deleteBranch(branchName);
 
 	return json({ success: true });
 }
