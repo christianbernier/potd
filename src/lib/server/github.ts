@@ -30,6 +30,12 @@ async function githubApiRequest(
 		},
 		body: data === undefined ? null : JSON.stringify(data)
 	});
+
+	// no content status for some requests
+	if (response.status === 204) {
+		return;
+	}
+
 	const result = await response.json();
 
 	// if there was a problem, throw an error
