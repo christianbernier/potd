@@ -1,16 +1,6 @@
 import { env } from './env.ts';
 
 /**
- * Convert a file into its base-64 representation.
- * @param file input file to convert
- * @returns a promise of a string with the base-64 version of the file contents
- */
-async function toBase64(file: File) {
-	const buffer = Buffer.from(await file.arrayBuffer());
-	return buffer.toString('base64');
-}
-
-/**
  * Send a request to the GitHub REST API.
  * @param path the specific resource path, within the given repository
  * @param method the HTTP method to use for the request
@@ -60,17 +50,28 @@ export async function createBranch(branch: string) {
 }
 
 /**
+ * Gets the SHA of a particular path in the repository.
+ * @param path the path of the file within the repository
+ */
+export async function getFileSha(path: string) {
+	const fileData = await githubApiRequest(`contents/${path}`, 'GET');
+	return fileData.sha;
+}
+
+/**
  * Add a file to the repository, in a specific branch, as a commit.
- * @param file the file to add to the repository
+ * @param base64 the base-64 encoding of the file to add to the repository
  * @param path the path of the file within the repository
  * @param branch the branch to add the commit of the file
+ * @param newFile whether the file is being created
  */
-export async function addFileToRepository(file: File, path: string, branch: string) {
-	const base64 = await toBase64(file);
+export async function addFileToRepository(base64: string, path: string, branch: string, newFile: boolean) {
+	const sha = newFile ? undefined : await getFileSha(path);
 	await githubApiRequest(`contents/${path}`, 'PUT', {
 		message: `Add file ${path}`,
 		content: base64,
-		branch
+		branch,
+		sha,
 	});
 }
 
@@ -80,11 +81,11 @@ export async function addFileToRepository(file: File, path: string, branch: stri
  * @param branch the branch to add the commit of the file
  */
 export async function deleteFileFromRepository(path: string, branch: string) {
-	const fileData = await githubApiRequest(`contents/${path}`, 'GET');
+	const sha = await getFileSha(path);
 	await githubApiRequest(`contents/${path}`, 'DELETE', {
 		message: `Delete file ${path}`,
 		branch,
-		sha: fileData.sha,
+		sha,
 	});
 }
 

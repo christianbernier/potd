@@ -1,4 +1,4 @@
-import { addFileToRepository, createBranch, deleteBranch, deleteFileFromRepository, mergeBranch, Post } from '$lib/server/index.ts';
+import { addFileToRepository, createBranch, deleteBranch, deleteFileFromRepository, fileToBase64, mergeBranch, Post } from '$lib/server/index.ts';
 import { error, json } from '@sveltejs/kit';
 
 /**
@@ -60,11 +60,13 @@ export async function POST({ params, request }) {
 	const caption = formData.get('caption') as string;
 	const fullQualityImage = formData.get('fullQualityImage') as File;
 	const compressedImage = formData.get('compressedImage') as File;
+	const fullQualityBase64 = await fileToBase64(fullQualityImage);
+	const compressedBase64 = await fileToBase64(compressedImage);
 
 	// add the image to Github
 	await createBranch(date);
-	await addFileToRepository(fullQualityImage, `static/fullQuality/${date}.jpeg`, date);
-	await addFileToRepository(compressedImage, `static/previews/${date}.jpeg`, date);
+	await addFileToRepository(fullQualityBase64, `static/fullQuality/${date}.jpeg`, date, true);
+	await addFileToRepository(compressedBase64, `static/previews/${date}.jpeg`, date, true);
 	await mergeBranch(date);
 	await deleteBranch(date);
 
