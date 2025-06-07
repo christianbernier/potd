@@ -1,14 +1,18 @@
 <script lang="ts">
-	import { padDatePart } from '$lib/index.ts';
+	import { padDatePart, type Captions } from '$lib/index.ts';
 	import YearCalendarMonth from './YearCalendarMonth.svelte';
 
-	const { year, dates }: { year: string; dates: Array<Set<string>> } = $props();
+	const { year, captions }: { year: string; captions: Captions } = $props();
 </script>
 
 <div class="wrapper">
 	{#each new Array(12) as _, i}
 		<a href={`/${year}/${padDatePart(i + 1)}`}>
-			<YearCalendarMonth monthStr={`${year}-${padDatePart(i + 1)}`} datesWithPosts={dates[i]} />
+			<YearCalendarMonth
+				{year}
+				month={padDatePart(i + 1)}
+				monthCaptions={captions[year]}
+			/>
 		</a>
 	{/each}
 </div>

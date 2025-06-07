@@ -7,4 +7,4 @@
 
 <NavBar current={data.year} back={data.back} forward={data.forward} />
 
-<YearCalendar year={data.year} dates={data.dates} />
+<YearCalendar year={data.year} captions={data.captions} />

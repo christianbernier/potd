@@ -2,14 +2,29 @@
 	import { padDatePart } from '$lib/index.ts';
 	import Calendar from './Calendar.svelte';
 
-	let { monthStr, datesWithPosts }: { monthStr: string; datesWithPosts: Set<string> } = $props();
+	let { 
+		year,
+		month, 
+		monthCaptions
+	}: { 
+		year: string; 
+		month: string;
+		monthCaptions: { 
+			[month in string]: { 
+				[date in string]: string | undefined
+			} | undefined
+		} | undefined;
+	} = $props();
 </script>
 
-<Calendar {monthStr}>
+<Calendar monthStr={`${year}-${month}`}>
 	{#snippet dates(daysInMonth)}
 		{#each new Array(daysInMonth) as _, day}
 			<div class="day">
-				{datesWithPosts.has(`${monthStr}-${padDatePart(day + 1)}`) ? 'x' : ''}
+				{(monthCaptions !== undefined &&
+					month in monthCaptions &&
+					padDatePart(day + 1) in (monthCaptions[month] || {})
+				) ? 'x' : ''}
 			</div>
 		{/each}
 	{/snippet}

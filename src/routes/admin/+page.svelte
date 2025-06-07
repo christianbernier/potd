@@ -10,11 +10,6 @@
 		<li><a href="/admin/new">New post</a></li>
 		<li><a href="/admin/edit">Edit post</a></li>
 		<li><a href="/admin/delete">Delete post</a></li>
-		<li>Jobs</li>
-		<ul>
-			<li><a href="/admin/jobs/sync/0">Sync</a></li>
-			<li><a href="/admin/jobs/download">Download</a></li>
-		</ul>
 	</ul>
 </div>
 

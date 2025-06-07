@@ -7,7 +7,8 @@ import { json } from '@sveltejs/kit';
  */
 export async function GET() {
 	const results = await Post.findAll({
-		attributes: ['date', 'caption']
+		attributes: ['date', 'caption'],
+		limit: 10,
 	});
 	return json(results);
 }

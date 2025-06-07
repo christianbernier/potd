@@ -1,9 +1,15 @@
-import { error, redirect, type NumericRange } from '@sveltejs/kit';
-import type { PageServerLoad } from './$types.ts';
-import { constructDateString, getDatePathOffset } from '$lib/index.ts';
+import { error, redirect } from '@sveltejs/kit';
+import type { PageServerLoad } from './$types.js';
+import { captions, constructDateString, getDatePathOffset } from '$lib/index.ts';
+
+function doesPostExist(path: string) {
+	const [_, year, month, day] = path.split('/')
+	return captions[year]?.[month]?.[day] !== undefined
+}
 
 export const load = (async (event) => {
-	const date = constructDateString([event.params.year, event.params.month, event.params.day]);
+	const [year, month, day] = [event.params.year, event.params.month, event.params.day]
+	const date = constructDateString([year, month, day]);
 
 	// ensure leading zeros
 	const expectedPath = getDatePathOffset(date, 0);
@@ -13,29 +19,21 @@ export const load = (async (event) => {
 
 	// check the neighboring dates to see if they have posts
 	const forward = getDatePathOffset(date, 1);
-	const forwardRes = await event.fetch(`/api/posts/${forward.replaceAll('/', '-')}`);
 	const back = getDatePathOffset(date, -1);
-	const backRes = await event.fetch(`/api/posts/${back.replaceAll('/', '-')}`);
 	const up = `/${event.params.year}/${event.params.month}`;
 
-	// get this date's post
-	const response = await event.fetch(`/api/posts/${date}`);
-	const post = await response.json();
+	const caption = captions[year]?.[month]?.[day]
 
-	if (!response.ok) {
-		error(response.status as NumericRange<400, 599>, post.message);
-	}
-
-	if (post === null) {
+	if (caption === undefined) {
 		error(404, 'No image for this date.');
 	}
 
 	return {
 		date,
-		caption: post.caption,
+		caption,
 		current: date.replaceAll('-', '/'),
-		forward: forwardRes.ok ? forward : undefined,
-		back: backRes.ok ? back : undefined,
+		forward: doesPostExist(forward) ? forward : undefined,
+		back: doesPostExist(back) ? back : undefined,
 		up
 	};
 }) satisfies PageServerLoad;

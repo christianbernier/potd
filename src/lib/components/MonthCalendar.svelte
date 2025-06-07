@@ -8,7 +8,7 @@
 		posts
 	}: {
 		monthStr: string;
-		posts: Array<string>;
+		posts: {[date in string]: string | undefined};
 	} = $props();
 </script>
 
@@ -18,9 +18,9 @@
 			<div class="day">
 				<a
 					href={`${page.url.pathname}/${padDatePart(day + 1)}`}
-					class={posts.includes(`${monthStr}-${padDatePart(day + 1)}`) ? '' : 'invisible'}
+					class={padDatePart(day + 1) in posts ? '' : 'invisible'}
 				>
-					{#if posts.includes(`${monthStr}-${padDatePart(day + 1)}`)}
+					{#if padDatePart(day + 1) in posts}
 						<img src={`/previews/${monthStr}-${padDatePart(day + 1)}.jpeg`} alt="" />
 					{/if}
 				</a>

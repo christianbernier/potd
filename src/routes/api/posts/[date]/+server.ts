@@ -1,45 +1,5 @@
-import { addFileToRepository, createBranch, deleteBranch, deleteFileFromRepository, fileToBase64, mergeBranch, Post } from '$lib/server/index.ts';
+import { addFileToRepository, createBranch, deleteBranch, deleteFileFromRepository, fileToBase64, mergeBranch } from '$lib/server/index.ts';
 import { error, json } from '@sveltejs/kit';
-
-/**
- * Gets the post with the provided date string.
- * @param dateStr the date string (YYYY-MM-DD) of the post to get
- * @returns a promise of the post, or null if it does not exist
- */
-async function getPost(dateStr: string): Promise<Post | null> {
-	return await Post.findOne({
-		attributes: ['date', 'caption'],
-		where: {
-			date: dateStr
-		}
-	});
-}
-
-/**
- * Does the post with the provided date string exist?
- * @param dateStr the date string (YYYY-MM-DD) of the post
- * @returns whether that post exists
- */
-async function doesPostExist(dateStr: string) {
-	const post = await getPost(dateStr);
-	return post !== null;
-}
-
-/**
- * GET the post with the provided date.
- * @param date the date string (YYYY-MM-DD) of the post to obtain
- * @returns the post object with the provided date
- */
-export async function GET({ params }) {
-	const date = params.date;
-	const result = await getPost(date);
-
-	if (result === null) {
-		error(404, { message: 'Post does not exist.' });
-	}
-
-	return json(result);
-}
 
 /**
  * POST a new post with the provide date, caption, and image.
@@ -51,9 +11,9 @@ export async function POST({ params, request }) {
 	const date = params.date;
 
 	// ensure the post does not already exist
-	if (await doesPostExist(date)) {
-		error(400, { message: `Post with date ${date} already exists.` });
-	}
+	// if (await doesPostExist(date)) {
+	// 	error(400, { message: `Post with date ${date} already exists.` });
+	// }
 
 	// extract the post information
 	const formData = await request.formData();
@@ -83,12 +43,12 @@ export async function POST({ params, request }) {
  */
 export async function DELETE({ params }) {
 	const date = params.date;
-	const existingPost = await getPost(date);
+	// const existingPost = await getPost(date);
 
-	// ensure the post actually exists first
-	if (existingPost === null) {
-		error(404, { message: 'Post does not exist.' });
-	}
+	// // ensure the post actually exists first
+	// if (existingPost === null) {
+	// 	error(404, { message: 'Post does not exist.' });
+	// }
 
 	await Post.destroy({ where: { date } });
 
@@ -111,12 +71,12 @@ export async function DELETE({ params }) {
  */
 export async function PATCH({ request, params }) {
 	const date = params.date;
-	const existingPost = await getPost(date);
+	// const existingPost = await getPost(date);
 
-	// ensure the post exists
-	if (existingPost === null) {
-		error(404, { message: 'Post does not exist.' });
-	}
+	// // ensure the post exists
+	// if (existingPost === null) {
+	// 	error(404, { message: 'Post does not exist.' });
+	// }
 
 	// extract the new caption to update
 	const formData = await request.formData();
