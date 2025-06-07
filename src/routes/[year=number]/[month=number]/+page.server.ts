@@ -3,7 +3,7 @@ import type { PageServerLoad } from './$types.ts';
 import { captions, constructDateString, getMonthPathOffset } from '$lib/index.ts';
 
 export const load = (async (event) => {
-	const [year, month] = [event.params.year, event.params.month]
+	const [year, month] = [event.params.year, event.params.month];
 
 	// ensure leading zero
 	if (month.length === 1) {

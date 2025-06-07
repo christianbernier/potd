@@ -8,7 +8,7 @@
 		posts
 	}: {
 		monthStr: string;
-		posts: {[date in string]: string | undefined};
+		posts: { [date in string]: string | undefined };
 	} = $props();
 </script>
 

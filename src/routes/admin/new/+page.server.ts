@@ -1,6 +1,12 @@
 import { captions } from '$lib/captions.ts';
 import { deconstructDateString } from '$lib/date.ts';
-import { addFileToRepository, createBranch, deleteBranch, fileToBase64, mergeBranch } from '$lib/server/index.ts';
+import {
+	addFileToRepository,
+	createBranch,
+	deleteBranch,
+	fileToBase64,
+	mergeBranch
+} from '$lib/server/index.ts';
 import { error, type Actions } from '@sveltejs/kit';
 
 export const actions = {
@@ -12,7 +18,7 @@ export const actions = {
 		const exists = (await fetch(`/${date.replaceAll('-', '/')}`)).ok;
 
 		if (exists) {
-			error(400, { message: 'Post already exists.' })
+			error(400, { message: 'Post already exists.' });
 		}
 
 		// extract the post information
@@ -22,18 +28,18 @@ export const actions = {
 		const fullQualityBase64 = await fileToBase64(fullQualityImage);
 		const compressedBase64 = await fileToBase64(compressedImage);
 
-		const newCaptionsObject = JSON.parse(JSON.stringify(captions))
-		
+		const newCaptionsObject = JSON.parse(JSON.stringify(captions));
+
 		if (!(year in newCaptionsObject)) {
-			newCaptionsObject[year] = {}
+			newCaptionsObject[year] = {};
 		}
 
 		if (!(month in newCaptionsObject[year])) {
-			newCaptionsObject[year][month] = {}
+			newCaptionsObject[year][month] = {};
 		}
 
-		newCaptionsObject[year][month][day] = caption
-		const newCaptionsBase64 = Buffer.from(JSON.stringify(newCaptionsObject)).toString('base64')
+		newCaptionsObject[year][month][day] = caption;
+		const newCaptionsBase64 = Buffer.from(JSON.stringify(newCaptionsObject)).toString('base64');
 
 		// add the image to Github
 

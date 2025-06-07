@@ -3,12 +3,12 @@ import type { EntryGenerator, PageServerLoad } from './$types.js';
 import { captions, constructDateString, getDatePathOffset } from '$lib/index.ts';
 
 function doesPostExist(path: string) {
-	const [_, year, month, day] = path.split('/')
-	return captions[year]?.[month]?.[day] !== undefined
+	const [_, year, month, day] = path.split('/');
+	return captions[year]?.[month]?.[day] !== undefined;
 }
 
 export const load = (async (event) => {
-	const [year, month, day] = [event.params.year, event.params.month, event.params.day]
+	const [year, month, day] = [event.params.year, event.params.month, event.params.day];
 	const date = constructDateString([year, month, day]);
 
 	// ensure leading zeros
@@ -22,7 +22,7 @@ export const load = (async (event) => {
 	const back = getDatePathOffset(date, -1);
 	const up = `/${event.params.year}/${event.params.month}`;
 
-	const caption = captions[year]?.[month]?.[day]
+	const caption = captions[year]?.[month]?.[day];
 
 	if (caption === undefined) {
 		error(404, 'No image for this date.');
@@ -39,12 +39,12 @@ export const load = (async (event) => {
 }) satisfies PageServerLoad;
 
 export const entries: EntryGenerator = () => {
-	const slugs = []
+	const slugs = [];
 
 	for (const year in captions) {
 		for (const month in captions[year]) {
 			for (const day in captions[year][month]) {
-				slugs.push({ year, month, day })
+				slugs.push({ year, month, day });
 			}
 		}
 	}

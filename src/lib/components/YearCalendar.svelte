@@ -8,11 +8,7 @@
 <div class="wrapper">
 	{#each new Array(12) as _, i}
 		<a href={`/${year}/${padDatePart(i + 1)}`}>
-			<YearCalendarMonth
-				{year}
-				month={padDatePart(i + 1)}
-				monthCaptions={captions[year]}
-			/>
+			<YearCalendarMonth {year} month={padDatePart(i + 1)} monthCaptions={captions[year]} />
 		</a>
 	{/each}
 </div>

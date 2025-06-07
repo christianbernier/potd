@@ -65,13 +65,18 @@ export async function getFileSha(path: string) {
  * @param branch the branch to add the commit of the file
  * @param newFile whether the file is being created
  */
-export async function addFileToRepository(base64: string, path: string, branch: string, newFile: boolean) {
+export async function addFileToRepository(
+	base64: string,
+	path: string,
+	branch: string,
+	newFile: boolean
+) {
 	const sha = newFile ? undefined : await getFileSha(path);
 	await githubApiRequest(`contents/${path}`, 'PUT', {
 		message: `Add file ${path}`,
 		content: base64,
 		branch,
-		sha,
+		sha
 	});
 }
 
@@ -85,7 +90,7 @@ export async function deleteFileFromRepository(path: string, branch: string) {
 	await githubApiRequest(`contents/${path}`, 'DELETE', {
 		message: `Delete file ${path}`,
 		branch,
-		sha,
+		sha
 	});
 }
 

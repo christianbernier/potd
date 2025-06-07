@@ -2,18 +2,22 @@
 	import { padDatePart } from '$lib/index.ts';
 	import Calendar from './Calendar.svelte';
 
-	let { 
+	let {
 		year,
-		month, 
+		month,
 		monthCaptions
-	}: { 
-		year: string; 
+	}: {
+		year: string;
 		month: string;
-		monthCaptions: { 
-			[month in string]: { 
-				[date in string]: string | undefined
-			} | undefined
-		} | undefined;
+		monthCaptions:
+			| {
+					[month in string]:
+						| {
+								[date in string]: string | undefined;
+						  }
+						| undefined;
+			  }
+			| undefined;
 	} = $props();
 </script>
 
@@ -21,10 +25,11 @@
 	{#snippet dates(daysInMonth)}
 		{#each new Array(daysInMonth) as _, day}
 			<div class="day">
-				{(monthCaptions !== undefined &&
-					month in monthCaptions &&
-					padDatePart(day + 1) in (monthCaptions[month] || {})
-				) ? 'x' : ''}
+				{monthCaptions !== undefined &&
+				month in monthCaptions &&
+				padDatePart(day + 1) in (monthCaptions[month] || {})
+					? 'x'
+					: ''}
 			</div>
 		{/each}
 	{/snippet}
