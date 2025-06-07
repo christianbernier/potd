@@ -8,8 +8,8 @@
 <div class="actions">
 	<ul>
 		<li><a href="/admin/new">New post</a></li>
-		<li><a href="/admin/edit">Edit post</a></li>
-		<li><a href="/admin/delete">Delete post</a></li>
+		<!-- <li><a href="/admin/edit">Edit post</a></li> -->
+		<!-- <li><a href="/admin/delete">Delete post</a></li> -->
 	</ul>
 </div>
 
