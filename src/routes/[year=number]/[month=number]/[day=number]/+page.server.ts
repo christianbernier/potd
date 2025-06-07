@@ -1,5 +1,5 @@
 import { error, redirect } from '@sveltejs/kit';
-import type { PageServerLoad } from './$types.js';
+import type { EntryGenerator, PageServerLoad } from './$types.js';
 import { captions, constructDateString, getDatePathOffset } from '$lib/index.ts';
 
 function doesPostExist(path: string) {
@@ -37,3 +37,19 @@ export const load = (async (event) => {
 		up
 	};
 }) satisfies PageServerLoad;
+
+export const entries: EntryGenerator = () => {
+	const slugs = []
+
+	for (const year in captions) {
+		for (const month in captions[year]) {
+			for (const day in captions[year][month]) {
+				slugs.push({ year, month, day })
+			}
+		}
+	}
+
+	return slugs;
+};
+
+export const prerender = true;
