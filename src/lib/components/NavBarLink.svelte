@@ -18,7 +18,13 @@
 </script>
 
 <svelte:window on:keydown={onKeyDown} />
-<a data-sveltekit-reload data-disabled={url === undefined} href={url}>{text}</a>
+<a
+	data-sveltekit-preload-data
+	data-disabled={url === undefined} 
+	href={url}
+>
+	{text}
+</a>
 
 <style>
 	a {
