@@ -38,6 +38,7 @@
 	"dependencies": {
 		"@sequelize/core": "^7.0.0-alpha.42",
 		"@sequelize/postgres": "^7.0.0-alpha.44",
+		"@sveltejs/adapter-static": "^3.0.8",
 		"browser-image-compression": "^2.0.2",
 		"dotenv": "^16.4.7",
 		"image-blob-reduce": "^4.1.0"
