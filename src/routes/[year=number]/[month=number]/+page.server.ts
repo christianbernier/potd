@@ -1,5 +1,5 @@
 import { redirect } from '@sveltejs/kit';
-import type { EntryGenerator, PageServerLoad } from './$types.ts';
+import type { PageServerLoad } from './$types.ts';
 import { captions, constructDateString, getMonthPathOffset } from '$lib/index.ts';
 
 export const load = (async (event) => {
@@ -25,17 +25,3 @@ export const load = (async (event) => {
 		up
 	};
 }) satisfies PageServerLoad;
-
-export const entries: EntryGenerator = () => {
-	const slugs = []
-
-	for (const year in captions) {
-		for (const month in captions[year]) {
-			slugs.push({ year, month })
-		}
-	}
-
-	return slugs;
-};
-
-export const prerender = true;
