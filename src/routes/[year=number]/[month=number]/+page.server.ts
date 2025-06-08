@@ -1,6 +1,11 @@
 import { redirect } from '@sveltejs/kit';
-import type { PageServerLoad } from './$types.ts';
+import type { EntryGenerator, PageServerLoad } from './$types.ts';
 import { captions, constructDateString, getMonthPathOffset } from '$lib/index.ts';
+
+function doesMonthHavePosts(path: string) {
+	const [_, year, month] = path.split('/');
+	return captions[year]?.[month] !== undefined;
+}
 
 export const load = (async (event) => {
 	const [year, month] = [event.params.year, event.params.month];
@@ -20,8 +25,23 @@ export const load = (async (event) => {
 	return {
 		posts: captions[year]?.[month] || {},
 		monthStr,
-		forward,
-		back,
+		forward: doesMonthHavePosts(forward) ? forward : undefined,
+		back: doesMonthHavePosts(back) ? back : undefined,
 		up
 	};
 }) satisfies PageServerLoad;
+
+export const entries: EntryGenerator = () => {
+	const slugs = new Set<{ year: string; month: string }>();
+
+	for (const year in captions) {
+		for (const month in captions[year]) {
+			slugs.add({ year, month });
+			slugs.add({ year, month: String(Number(month)) });
+		}
+	}
+
+	return Array.from(slugs);
+};
+
+export const prerender = true;

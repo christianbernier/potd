@@ -39,17 +39,20 @@ export const load = (async (event) => {
 }) satisfies PageServerLoad;
 
 export const entries: EntryGenerator = () => {
-	const slugs = [];
+	const slugs = new Set<{ year: string; month: string; day: string }>();
 
 	for (const year in captions) {
 		for (const month in captions[year]) {
 			for (const day in captions[year][month]) {
-				slugs.push({ year, month, day });
+				slugs.add({ year, month, day });
+				slugs.add({ year, month, day: String(Number(day)) });
+				slugs.add({ year, month: String(Number(month)), day });
+				slugs.add({ year, month: String(Number(month)), day: String(Number(day)) });
 			}
 		}
 	}
 
-	return slugs;
+	return Array.from(slugs);
 };
 
 export const prerender = true;
