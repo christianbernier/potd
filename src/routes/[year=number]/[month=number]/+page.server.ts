@@ -43,5 +43,3 @@ export const entries: EntryGenerator = () => {
 
 	return Array.from(slugs);
 };
-
-export const prerender = true;
